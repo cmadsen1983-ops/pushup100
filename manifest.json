@@ -1,0 +1,8 @@
+{
+  "name": "Pushup 100",
+  "short_name": "Push100",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000"
+}
