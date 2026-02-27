@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pushup 100</title>
+
+<style>
+body {
+  margin:0;
+  background:#000;
+  color:#fff;
+  font-family:-apple-system, BlinkMacSystemFont, sans-serif;
+  text-align:center;
+}
+
+.screen {
+  padding:40px 20px;
+}
+
+.big {
+  font-size:64px;
+  font-weight:600;
+  margin:20px 0;
+}
+
+.medium {
+  font-size:22px;
+  opacity:.7;
+}
+
+button {
+  width:100%;
+  padding:18px;
+  margin-top:20px;
+  border:none;
+  border-radius:20px;
+  font-size:18px;
+}
+
+.primary {
+  background:#32d74b;
+  color:#000;
+}
+
+.subtle {
+  background:#1c1c1e;
+  color:#fff;
+}
+
+.hidden { display:none; }
+
+.progress-ring {
+  font-size:22px;
+  margin-top:10px;
+  opacity:.7;
+}
+</style>
+</head>
+
+<body>
+
+<div class="screen" id="home">
+
+<div class="medium">Baseline</div>
+<div class="big" id="baseline"></div>
+
+<div class="progress-ring">
+Level <span id="level"></span> • 🔥 <span id="streak"></span> streak
+</div>
+
+<div class="progress-ring">
+Target Today: <span id="volume"></span>
+</div>
+
+<button class="primary" onclick="startWarmup()">Start Workout</button>
+<button class="subtle" onclick="adjustBaseline()">Adjust Baseline</button>
+
+</div>
+
+<div class="screen hidden" id="workout">
+
+<div class="medium" id="status"></div>
+<div class="big" id="mainDisplay"></div>
+
+<button class="primary hidden" id="doneBtn" onclick="completeSet()">Done</button>
+
+<div id="ratingArea" class="hidden">
+<button class="primary" onclick="rate('easy')">Føles let</button>
+<button class="subtle" onclick="rate('ok')">Passende</button>
+<button style="background:#ff453a;color:#fff;" onclick="rate('hard')">For tungt</button>
+</div>
+
+</div>
+
+<script>
+
+let baseline = parseInt(localStorage.getItem("baseline")) || 25;
+let streak = parseInt(localStorage.getItem("streak")) || 0;
+let volumeFactor = parseFloat(localStorage.getItem("volumeFactor")) || 2.6;
+
+let sets = [];
+let currentIndex = 0;
+let timerInterval;
+
+function save(){
+localStorage.setItem("baseline", baseline);
+localStorage.setItem("streak", streak);
+localStorage.setItem("volumeFactor", volumeFactor);
+}
+
+function updateHome(){
+document.getElementById("baseline").innerText = baseline;
+document.getElementById("level").innerText = Math.floor(baseline/5);
+document.getElementById("streak").innerText = streak;
+document.getElementById("volume").innerText = Math.round(baseline*volumeFactor);
+}
+
+function adjustBaseline(){
+let newVal = prompt("Ny baseline (max -2):", baseline);
+if(newVal){
+baseline = parseInt(newVal);
+save();
+updateHome();
+}
+}
+
+function generateSets(){
+let total = Math.round(baseline * volumeFactor);
+sets = [
+Math.round(total * .25),
+Math.round(total * .2),
+Math.round(total * .2),
+total - Math.round(total * .65)
+];
+}
+
+function startWarmup(){
+document.getElementById("home").classList.add("hidden");
+document.getElementById("workout").classList.remove("hidden");
+document.getElementById("status").innerText = "Warmup";
+startTimer(300, startSets);
+}
+
+function startSets(){
+generateSets();
+currentIndex = 0;
+showSet();
+}
+
+function showSet(){
+document.getElementById("status").innerText = "Set " + (currentIndex+1);
+document.getElementById("mainDisplay").innerText = sets[currentIndex];
+document.getElementById("doneBtn").classList.remove("hidden");
+}
+
+function completeSet(){
+if(navigator.vibrate) navigator.vibrate(50);
+
+currentIndex++;
+document.getElementById("doneBtn").classList.add("hidden");
+
+if(currentIndex >= sets.length){
+document.getElementById("status").innerText = "Workout Complete";
+document.getElementById("mainDisplay").innerText = "🔥";
+document.getElementById("ratingArea").classList.remove("hidden");
+} else {
+document.getElementById("status").innerText = "Rest";
+startTimer(120, showSet);
+}
+}
+
+function rate(level){
+if(level=="easy"){ volumeFactor *= 1.03; baseline += 1; streak++; }
+if(level=="ok"){ streak++; }
+if(level=="hard"){ volumeFactor *= 0.97; streak = 0; }
+
+save();
+updateHome();
+
+document.getElementById("ratingArea").classList.add("hidden");
+document.getElementById("workout").classList.add("hidden");
+document.getElementById("home").classList.remove("hidden");
+}
+
+function startTimer(sec, callback){
+let remaining = sec;
+document.getElementById("mainDisplay").innerText = format(remaining);
+timerInterval = setInterval(()=>{
+remaining--;
+document.getElementById("mainDisplay").innerText = format(remaining);
+if(remaining<=0){
+clearInterval(timerInterval);
+if(navigator.vibrate) navigator.vibrate([100,50,100]);
+callback();
+}
+},1000);
+}
+
+function format(s){
+let m = Math.floor(s/60);
+let r = s%60;
+return m+":"+(r<10?"0":"")+r;
+}
+
+updateHome();
+
+</script>
+
+</body>
+</html>
