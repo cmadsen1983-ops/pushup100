@@ -27,7 +27,7 @@
     font-family:-apple-system,BlinkMacSystemFont,sans-serif;
   }
 
-  .wrap{ padding:22px 16px 90px; max-width:560px; margin:0 auto; }
+  .wrap{ padding:22px 16px 104px; max-width:560px; margin:0 auto; }
 
   .topbar{
     display:flex; align-items:center; justify-content:space-between;
@@ -107,22 +107,45 @@
 
   .hidden{ display:none !important; }
 
-  /* Workout screen */
+  /* Workout hero */
+  .heroWrap{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+  }
   .hero{
-    text-align:center;
-    padding:8px 0 0;
+    text-align:left;
+    padding:6px 0 0;
+    flex:1;
   }
   .heroStatus{
     color:var(--muted);
     font-size:15px;
-    margin-top:6px;
+    margin-top:2px;
   }
   .heroBig{
-    font-size:64px;
-    font-weight:700;
-    margin:10px 0 0;
+    font-size:58px;
+    font-weight:750;
+    margin:8px 0 0;
     letter-spacing:-.5px;
   }
+
+  /* Progress ring */
+  .ringBox{ width:98px; height:98px; position:relative; flex:0 0 98px; }
+  .ringSvg{ width:98px;height:98px; transform:rotate(-90deg); }
+  .ringTrack{ stroke:rgba(255,255,255,.10); stroke-width:10; fill:transparent; }
+  .ringProgress{
+    stroke:var(--green); stroke-width:10; fill:transparent; stroke-linecap:round;
+    transition:stroke-dashoffset .25s ease, stroke .25s ease;
+  }
+  .ringText{
+    position:absolute; inset:0;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;
+    text-align:center;
+  }
+  .ringTop{ font-size:13px; font-weight:700; color:rgba(255,255,255,.92); line-height:1; }
+  .ringBottom{ font-size:12px; color:var(--muted2); line-height:1; }
 
   /* Steps list */
   .stepsHeader{
@@ -159,18 +182,11 @@
   .stepMain{ flex:1; text-align:left; }
   .stepName{ font-weight:650; font-size:14px; }
   .stepSub{ color:var(--muted2); font-size:12px; margin-top:2px; }
-  .stepRight{ font-weight:700; font-size:14px; color:rgba(255,255,255,.85); }
+  .stepRight{ font-weight:750; font-size:14px; color:rgba(255,255,255,.85); }
 
-  .step.current{
-    border-color:rgba(50,215,75,.35);
-    background:rgba(50,215,75,.08);
-  }
-  .step.done{
-    opacity:.55;
-  }
-  .step.done .stepIcon{
-    background:rgba(50,215,75,.18);
-  }
+  .step.current{ border-color:rgba(50,215,75,.35); background:rgba(50,215,75,.08); }
+  .step.done{ opacity:.55; }
+  .step.done .stepIcon{ background:rgba(50,215,75,.18); }
 
   /* History */
   .historyItem{
@@ -197,7 +213,7 @@
     display:flex; justify-content:space-between; gap:12px;
     align-items:flex-start;
   }
-  .historyTitle{ font-weight:700; }
+  .historyTitle{ font-weight:750; }
   .historyMeta{ color:var(--muted2); font-size:12px; margin-top:4px; }
   .historySets{
     color:rgba(255,255,255,.85);
@@ -214,6 +230,80 @@
     border:none;
     padding:0;
   }
+
+  /* Week overview */
+  .weekHeader{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:10px;
+  }
+  .weekTitle{
+    font-size:18px; font-weight:750;
+  }
+  .weekNav{
+    display:flex; gap:8px;
+  }
+  .miniBtn{
+    padding:10px 12px;
+    border-radius:14px;
+    border:1px solid var(--line);
+    background:var(--card2);
+    color:#fff;
+    font-weight:700;
+    font-size:13px;
+  }
+
+  .dayChips{
+    display:flex;
+    gap:10px;
+    margin-top:12px;
+  }
+  .dayChip{
+    flex:1;
+    padding:12px 10px;
+    border-radius:16px;
+    border:1px solid var(--line);
+    background:#0b0b0c;
+    text-align:left;
+  }
+  .dayChipTop{
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .dayChipTitle{
+    font-weight:800;
+    font-size:14px;
+  }
+  .dayChipState{
+    font-size:12px;
+    color:var(--muted);
+    padding:4px 8px;
+    border-radius:999px;
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.10);
+  }
+  .dayChipState.done{
+    color:#000;
+    background:rgba(50,215,75,.95);
+    border-color:rgba(50,215,75,.95);
+  }
+  .dayChipState.missed{
+    background:rgba(255,69,58,.14);
+    border-color:rgba(255,69,58,.25);
+    color:rgba(255,255,255,.9);
+  }
+  .dayChipMeta{
+    margin-top:8px;
+    font-size:12px;
+    color:var(--muted2);
+    line-height:1.35;
+  }
+  .weekSummary{
+    display:flex; justify-content:space-between; gap:12px;
+    margin-top:14px;
+    padding-top:12px;
+    border-top:1px solid var(--line);
+    color:rgba(255,255,255,.85);
+    font-size:13px;
+  }
 </style>
 </head>
 
@@ -221,7 +311,7 @@
   <div class="wrap">
     <div class="topbar">
       <div class="title">Pushup 100</div>
-      <div class="pill" id="topPill">Level 0 • 🔥 0</div>
+      <div class="pill" id="topPill">W1D1 • Level 0 • 🔥 0</div>
     </div>
 
     <!-- HOME -->
@@ -268,9 +358,22 @@
     <!-- WORKOUT -->
     <div id="screenWorkout" class="hidden">
       <div class="card">
-        <div class="hero">
-          <div class="heroStatus" id="workoutStatus">Warmup</div>
-          <div class="heroBig" id="workoutMain">5:00</div>
+        <div class="heroWrap">
+          <div class="hero">
+            <div class="heroStatus" id="workoutStatus">Warmup</div>
+            <div class="heroBig" id="workoutMain">5:00</div>
+          </div>
+
+          <div class="ringBox" aria-label="Progress">
+            <svg class="ringSvg" viewBox="0 0 100 100">
+              <circle class="ringTrack" cx="50" cy="50" r="42"></circle>
+              <circle class="ringProgress" cx="50" cy="50" r="42" id="ringCircle"></circle>
+            </svg>
+            <div class="ringText">
+              <div class="ringTop"><span id="ringDone">0</span> <span style="opacity:.65">of</span> <span id="ringTotal">0</span></div>
+              <div class="ringBottom">reps</div>
+            </div>
+          </div>
         </div>
 
         <div id="workoutButtons" style="margin-top:12px">
@@ -295,7 +398,7 @@
       </div>
     </div>
 
-    <!-- PLAN (full steps before starting) -->
+    <!-- PLAN -->
     <div id="screenPlan" class="hidden">
       <div class="card">
         <div class="stepsHeader">
@@ -305,6 +408,39 @@
         <div id="planFull"></div>
         <button class="btn btn-primary" onclick="startWorkout()">Start workout</button>
         <button class="btn btn-subtle" onclick="goHome()">Tilbage</button>
+      </div>
+    </div>
+
+    <!-- WEEK -->
+    <div id="screenWeek" class="hidden">
+      <div class="card">
+        <div class="weekHeader">
+          <div>
+            <div class="label">Ugeoversigt</div>
+            <div class="weekTitle" id="weekTitle">Week 1</div>
+          </div>
+          <div class="weekNav">
+            <button class="miniBtn" onclick="prevWeek()">‹</button>
+            <button class="miniBtn" onclick="goToCurrentWeek()">Nu</button>
+            <button class="miniBtn" onclick="nextWeek()">›</button>
+          </div>
+        </div>
+
+        <div class="dayChips" id="dayChips"></div>
+
+        <div class="weekSummary">
+          <div>Gennemført: <b id="weekDone">0/3</b></div>
+          <div>Reps: <b id="weekReps">0</b></div>
+          <div>Rating: <b id="weekRating">—</b></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stepsHeader">
+          <div class="stepsTitle">Detaljer</div>
+          <div class="chip" id="weekDetailChip">Vælg en dag</div>
+        </div>
+        <div id="weekDetails"></div>
       </div>
     </div>
 
@@ -325,6 +461,7 @@
   <div class="tabs">
     <div class="tab active" id="tabHome" onclick="showScreen('home')">Home</div>
     <div class="tab" id="tabWorkout" onclick="showScreen('workout')">Workout</div>
+    <div class="tab" id="tabWeek" onclick="showScreen('week')">Uge</div>
     <div class="tab" id="tabHistory" onclick="showScreen('history')">Historik</div>
   </div>
 
@@ -335,10 +472,18 @@
 let baseline = parseInt(localStorage.getItem("baseline") || "25", 10);
 let volumeFactor = parseFloat(localStorage.getItem("volumeFactor") || "2.6");
 let streak = parseInt(localStorage.getItem("streak") || "0", 10);
-let workouts = JSON.parse(localStorage.getItem("workouts") || "[]"); // array of sessions
+let workouts = JSON.parse(localStorage.getItem("workouts") || "[]");
+
+// Week/Day overlay
+let currentWeek = parseInt(localStorage.getItem("currentWeek") || "1", 10);
+let currentDay = parseInt(localStorage.getItem("currentDay") || "1", 10); // 1..3
+
+// Week screen state
+let selectedWeek = currentWeek;
+let selectedDay = 1;
 
 // Active workout runtime
-let steps = [];          // [{type:'warmup'|'set'|'rest'|'done', label, valueSeconds|reps, id}]
+let steps = [];
 let currentStepIndex = 0;
 let timer = null;
 let remaining = 0;
@@ -346,11 +491,17 @@ let performedReps = 0;
 let plannedTotal = 0;
 let activeSessionId = null;
 
+// Ring constants
+const RING_R = 42;
+const RING_C = 2 * Math.PI * RING_R;
+
 function saveAll(){
   localStorage.setItem("baseline", String(baseline));
   localStorage.setItem("volumeFactor", String(volumeFactor));
   localStorage.setItem("streak", String(streak));
   localStorage.setItem("workouts", JSON.stringify(workouts));
+  localStorage.setItem("currentWeek", String(currentWeek));
+  localStorage.setItem("currentDay", String(currentDay));
 }
 
 function phase(){
@@ -359,14 +510,94 @@ function phase(){
   return 3;
 }
 
+function weekDayLabel(w=currentWeek, d=currentDay){
+  return `W${w}D${d}`;
+}
+
+function setActiveTab(which){
+  document.getElementById("tabHome").classList.toggle("active", which==="home");
+  document.getElementById("tabWorkout").classList.toggle("active", which==="workout");
+  document.getElementById("tabWeek").classList.toggle("active", which==="week");
+  document.getElementById("tabHistory").classList.toggle("active", which==="history");
+}
+
+function showScreen(which){
+  if (which==="workout" && !activeSessionId){
+    which = "home";
+  }
+
+  document.getElementById("screenHome").classList.toggle("hidden", which!=="home");
+  document.getElementById("screenWorkout").classList.toggle("hidden", which!=="workout");
+  document.getElementById("screenWeek").classList.toggle("hidden", which!=="week");
+  document.getElementById("screenHistory").classList.toggle("hidden", which!=="history");
+  document.getElementById("screenPlan").classList.add("hidden");
+
+  setActiveTab(which);
+
+  if (which==="history") renderHistory();
+  if (which==="week") {
+    selectedWeek = selectedWeek || currentWeek;
+    renderWeek();
+  }
+}
+
+function goHome(){ showScreen("home"); }
+
+function hapticShort(){ try{ if (navigator.vibrate) navigator.vibrate(50); }catch(e){} }
+function hapticDone(){ try{ if (navigator.vibrate) navigator.vibrate([80,40,80]); }catch(e){} }
+
+function fmtTime(sec){
+  const m = Math.floor(sec/60);
+  const s = sec % 60;
+  return `${m}:${s<10?"0":""}${s}`;
+}
+
+function updateTopPill(){
+  const lvl = Math.floor(baseline / 5);
+  document.getElementById("topPill").innerText = `${weekDayLabel()} • Level ${lvl} • 🔥 ${streak}`;
+}
+
+function estimateWeeksTo100(){
+  const recent = workouts.slice(-6).filter(w=>w.completed && w.baselineAfter!=null);
+  let weeklyGain = 1.5;
+  if (recent.length >= 3){
+    const first = recent[0].baselineAfter;
+    const last = recent[recent.length-1].baselineAfter;
+    const sessions = recent.length-1;
+    const gainPerSession = sessions>0 ? (last-first)/sessions : 0;
+    weeklyGain = Math.max(0.5, Math.min(3.0, gainPerSession*2.3));
+  }
+  const remaining = Math.max(0, 100 - baseline);
+  return Math.ceil(remaining / weeklyGain);
+}
+
+/* -------------------------
+   Ring
+-------------------------- */
+function initRing(){
+  const circle = document.getElementById("ringCircle");
+  circle.style.strokeDasharray = `${RING_C} ${RING_C}`;
+  circle.style.strokeDashoffset = `${RING_C}`;
+}
+function updateRing(done, total, color=null){
+  const circle = document.getElementById("ringCircle");
+  const safeTotal = Math.max(1, total || 1);
+  const ratio = Math.max(0, Math.min(1, done / safeTotal));
+  const offset = RING_C * (1 - ratio);
+
+  document.getElementById("ringDone").innerText = String(done);
+  document.getElementById("ringTotal").innerText = String(total);
+
+  circle.style.strokeDashoffset = `${offset}`;
+  if (color) circle.style.stroke = color;
+  else circle.style.stroke = getComputedStyle(document.documentElement).getPropertyValue('--green').trim();
+}
+
 /* -------------------------
    Plan generation
-   (Atletisk men enkel)
 -------------------------- */
 function generateSets(total){
-  // Apple-fitness-ish: 4 sæt i fase 1, 5 sæt i fase 2, 4 sæt i fase 3 (mere "cluster"/kapacitet)
   if (phase() === 1){
-    // jævn fordeling + sidste sæt større
     const a = Math.round(total * 0.20);
     const b = Math.round(total * 0.22);
     const c = Math.round(total * 0.20);
@@ -374,7 +605,6 @@ function generateSets(total){
     return [a,b,c,d];
   }
   if (phase() === 2){
-    // tempo/density: lidt flere sæt
     const a = Math.round(total * 0.22);
     const b = Math.round(total * 0.20);
     const c = Math.round(total * 0.18);
@@ -382,7 +612,6 @@ function generateSets(total){
     const e = total - (a+b+c+d);
     return [a,b,c,d,e];
   }
-  // phase 3: kapacitet/cluster-følelse
   const a = Math.round(total * 0.38);
   const b = Math.round(total * 0.26);
   const c = Math.round(total * 0.18);
@@ -411,91 +640,13 @@ function buildSteps(){
 }
 
 function cryptoId(){
-  // simple unique id
   return Math.random().toString(16).slice(2) + Date.now().toString(16);
 }
 
 /* -------------------------
-   UI helpers
+   Home render
 -------------------------- */
-function setActiveTab(which){
-  document.getElementById("tabHome").classList.toggle("active", which==="home");
-  document.getElementById("tabWorkout").classList.toggle("active", which==="workout");
-  document.getElementById("tabHistory").classList.toggle("active", which==="history");
-}
-
-function showScreen(which){
-  // Only allow workout screen if a workout is active; otherwise send to Home
-  if (which==="workout" && !activeSessionId){
-    which = "home";
-  }
-  document.getElementById("screenHome").classList.toggle("hidden", which!=="home");
-  document.getElementById("screenWorkout").classList.toggle("hidden", which!=="workout");
-  document.getElementById("screenHistory").classList.toggle("hidden", which!=="history");
-  document.getElementById("screenPlan").classList.add("hidden");
-
-  setActiveTab(which);
-  if (which==="history") renderHistory();
-}
-
-function goHome(){ showScreen("home"); }
-
-function hapticShort(){
-  try{ if (navigator.vibrate) navigator.vibrate(50); }catch(e){}
-}
-function hapticDone(){
-  try{ if (navigator.vibrate) navigator.vibrate([80,40,80]); }catch(e){}
-}
-
-function fmtTime(sec){
-  const m = Math.floor(sec/60);
-  const s = sec % 60;
-  return `${m}:${s<10?"0":""}${s}`;
-}
-
-function updateTopPill(){
-  const lvl = Math.floor(baseline / 5);
-  document.getElementById("topPill").innerText = `Level ${lvl} • 🔥 ${streak}`;
-}
-
-function estimateWeeksTo100(){
-  // simpelt: baseret på din baseline – vi gør det smartere senere med trend fra historik
-  // Realistisk: 1-2 reps baseline pr. uge i snit, afhængigt af historik
-  const recent = workouts.slice(-6).filter(w=>w.completed && w.baselineAfter!=null);
-  let weeklyGain = 1.5;
-  if (recent.length >= 3){
-    // brug faktisk baseline-trend
-    const first = recent[0].baselineAfter;
-    const last = recent[recent.length-1].baselineAfter;
-    const sessions = recent.length-1;
-    const gainPerSession = sessions>0 ? (last-first)/sessions : 0;
-    // antag 2-3 sessions/uge -> approx 2.3 sessions/uge
-    weeklyGain = Math.max(0.5, Math.min(3.0, gainPerSession*2.3));
-  }
-  const remaining = Math.max(0, 100 - baseline);
-  return Math.ceil(remaining / weeklyGain);
-}
-
-/* -------------------------
-   Render: Home plan preview
--------------------------- */
-function renderHome(){
-  updateTopPill();
-  document.getElementById("baselineVal").innerText = baseline;
-  document.getElementById("phaseVal").innerText = phase();
-  document.getElementById("todayTarget").innerText = Math.round(baseline * volumeFactor);
-  document.getElementById("etaVal").innerText = estimateWeeksTo100();
-
-  const plan = buildSteps(); // rebuild daily plan preview
-  const chipText = `${steps.length} steps • ${plannedTotal} reps`;
-  document.getElementById("stepsChip").innerText = chipText;
-
-  // preview first ~6 steps
-  const preview = steps.slice(0,6).map(stepRowHtml).join("");
-  document.getElementById("planPreview").innerHTML = preview;
-}
-
-function stepRowHtml(st, idx){
+function stepRowHtml(st){
   const icon = st.type==="warmup" ? "⏳" : (st.type==="rest" ? "⏱" : (st.type==="set" ? "▶︎" : "✓"));
   const right = st.type==="set" ? `${st.reps}` : (st.type==="warmup"||st.type==="rest" ? fmtTime(st.seconds) : "");
   const sub = st.type==="set" ? "Pushups" : (st.type==="rest" ? "Rest" : "Warmup");
@@ -511,11 +662,23 @@ function stepRowHtml(st, idx){
   `;
 }
 
+function renderHome(){
+  updateTopPill();
+  document.getElementById("baselineVal").innerText = baseline;
+  document.getElementById("phaseVal").innerText = phase();
+  document.getElementById("todayTarget").innerText = Math.round(baseline * volumeFactor);
+  document.getElementById("etaVal").innerText = estimateWeeksTo100();
+
+  buildSteps();
+  document.getElementById("stepsChip").innerText = `${steps.length} steps • ${plannedTotal} reps`;
+  document.getElementById("planPreview").innerHTML = steps.slice(0,6).map(stepRowHtml).join("");
+}
+
 function openPlan(){
-  // show full steps list BEFORE starting
   buildSteps();
   document.getElementById("screenHome").classList.add("hidden");
   document.getElementById("screenWorkout").classList.add("hidden");
+  document.getElementById("screenWeek").classList.add("hidden");
   document.getElementById("screenHistory").classList.add("hidden");
   document.getElementById("screenPlan").classList.remove("hidden");
   setActiveTab("home");
@@ -528,20 +691,19 @@ function openPlan(){
    Workout flow
 -------------------------- */
 function startWorkout(){
-  // start new session
   buildSteps();
   performedReps = 0;
   currentStepIndex = 0;
-
   activeSessionId = cryptoId();
 
-  // create session skeleton (marked incomplete until rated)
   const now = new Date();
-  const sess = {
+  workouts.push({
     id: activeSessionId,
+    week: currentWeek,
+    day: currentDay,
+    weekDay: weekDayLabel(currentWeek, currentDay),
     dateISO: now.toISOString(),
-    plannedTotal: plannedTotal,
-    steps: steps.map(s=>({ type:s.type, label:s.label, reps:s.reps||null, seconds:s.seconds||null })),
+    plannedTotal,
     performedReps: 0,
     sets: steps.filter(s=>s.type==="set").map(s=>s.reps),
     completed: false,
@@ -551,13 +713,12 @@ function startWorkout(){
     volumeFactorBefore: volumeFactor,
     volumeFactorAfter: null,
     phase: phase()
-  };
-  workouts.push(sess);
+  });
   saveAll();
 
-  // show workout screen
   document.getElementById("screenHome").classList.add("hidden");
   document.getElementById("screenPlan").classList.add("hidden");
+  document.getElementById("screenWeek").classList.add("hidden");
   document.getElementById("screenHistory").classList.add("hidden");
   document.getElementById("screenWorkout").classList.remove("hidden");
   setActiveTab("workout");
@@ -566,6 +727,7 @@ function startWorkout(){
   document.getElementById("workoutButtons").classList.remove("hidden");
   document.getElementById("doneBtn").classList.remove("hidden");
 
+  updateRing(0, plannedTotal);
   renderStepsList();
   runCurrentStep();
 }
@@ -573,18 +735,15 @@ function startWorkout(){
 function renderStepsList(){
   const totalSets = steps.filter(s=>s.type==="set").length;
   const doneSets = steps.slice(0, currentStepIndex).filter(s=>s.type==="set").length;
+  document.getElementById("progressText").innerText = `${weekDayLabel()} • ${doneSets}/${totalSets} sets • ${performedReps}/${plannedTotal} reps`;
 
-  document.getElementById("progressText").innerText = `${doneSets}/${totalSets} sets • ${performedReps}/${plannedTotal} reps`;
-
-  const html = steps.map((s, idx)=>{
+  document.getElementById("stepsList").innerHTML = steps.map((s, idx)=>{
     const icon = s.type==="warmup" ? "⏳" : (s.type==="rest" ? "⏱" : (s.type==="set" ? "▶︎" : "✓"));
     const right = s.type==="set" ? `${s.reps}` : (s.type==="warmup"||s.type==="rest" ? fmtTime(s.seconds) : "");
     const sub = s.type==="set" ? "Pushups" : (s.type==="rest" ? "Rest" : (s.type==="warmup" ? "Warmup" : "Finish"));
-
     let cls = "step";
     if (idx === currentStepIndex) cls += " current";
     if (idx < currentStepIndex) cls += " done";
-
     return `
       <div class="${cls}">
         <div class="stepIcon">${idx < currentStepIndex ? "✓" : icon}</div>
@@ -596,44 +755,35 @@ function renderStepsList(){
       </div>
     `;
   }).join("");
-
-  document.getElementById("stepsList").innerHTML = html;
 }
 
 function runCurrentStep(){
   clearTimer();
-
   const st = steps[currentStepIndex];
-
-  if (!st){
-    finishWorkoutUI();
-    return;
-  }
+  if (!st){ finishWorkoutUI(); return; }
 
   if (st.type === "warmup"){
-    document.getElementById("workoutStatus").innerText = "Warmup";
+    document.getElementById("workoutStatus").innerText = `${weekDayLabel()} • Warmup`;
     document.getElementById("doneBtn").classList.add("hidden");
     startTimer(st.seconds, ()=>{ hapticDone(); nextStep(); });
     return;
   }
 
   if (st.type === "rest"){
-    document.getElementById("workoutStatus").innerText = "Rest";
+    document.getElementById("workoutStatus").innerText = `${weekDayLabel()} • Rest`;
     document.getElementById("doneBtn").classList.add("hidden");
     startTimer(st.seconds, ()=>{ hapticDone(); nextStep(); });
     return;
   }
 
   if (st.type === "set"){
-    document.getElementById("workoutStatus").innerText = st.label;
+    document.getElementById("workoutStatus").innerText = `${weekDayLabel()} • ${st.label}`;
     document.getElementById("workoutMain").innerText = String(st.reps);
     document.getElementById("doneBtn").classList.remove("hidden");
     return;
   }
 
-  if (st.type === "done"){
-    finishWorkoutUI();
-  }
+  finishWorkoutUI();
 }
 
 function startTimer(seconds, onDone){
@@ -660,7 +810,8 @@ function tapDone(){
   performedReps += st.reps;
   hapticShort();
 
-  // update session stored
+  updateRing(performedReps, plannedTotal);
+
   const sess = workouts.find(w=>w.id===activeSessionId);
   if (sess){
     sess.performedReps = performedReps;
@@ -679,12 +830,11 @@ function nextStep(){
 
 function finishWorkoutUI(){
   clearTimer();
-  document.getElementById("workoutStatus").innerText = "Workout complete";
+  document.getElementById("workoutStatus").innerText = `${weekDayLabel()} • Workout complete`;
   document.getElementById("workoutMain").innerText = "🔥";
   document.getElementById("workoutButtons").classList.add("hidden");
   document.getElementById("ratingArea").classList.remove("hidden");
   hapticDone();
-
   renderStepsList();
 }
 
@@ -694,7 +844,6 @@ function confirmEnd(){
 
   clearTimer();
 
-  // mark session incomplete
   const sess = workouts.find(w=>w.id===activeSessionId);
   if (sess){
     sess.completed = false;
@@ -703,50 +852,50 @@ function confirmEnd(){
     saveAll();
   }
 
-  // reset runtime
   activeSessionId = null;
   steps = [];
   currentStepIndex = 0;
   performedReps = 0;
   plannedTotal = 0;
 
-  // go home
   showScreen("home");
   renderHome();
 }
 
 /* -------------------------
-   Rating -> progression
+   Rating + week/day advance
 -------------------------- */
-function rateWorkout(level){
-  // progression rules (skånsom men effektiv)
-  // easy: lidt mere volumen + baseline op
-  // ok: lille volumenstigning
-  // hard: hold / lidt ned
-  // fail: deload
-  const beforeBaseline = baseline;
-  const beforeVF = volumeFactor;
+function advanceWeekDay(){
+  currentDay += 1;
+  if (currentDay > 3){
+    currentDay = 1;
+    currentWeek += 1;
+  }
+}
 
+function rateWorkout(level){
   if (level === "easy"){
     volumeFactor *= 1.03;
     baseline += 1;
     streak += 1;
+    updateRing(performedReps, plannedTotal, getCss('--green'));
   } else if (level === "ok"){
     volumeFactor *= 1.015;
     streak += 1;
+    updateRing(performedReps, plannedTotal, getCss('--green'));
   } else if (level === "hard"){
     volumeFactor *= 0.99;
     streak = 0;
+    updateRing(performedReps, plannedTotal, getCss('--amber'));
   } else if (level === "fail"){
     volumeFactor *= 0.95;
     streak = 0;
+    updateRing(performedReps, plannedTotal, getCss('--red'));
   }
 
-  // clamp
   volumeFactor = Math.max(1.6, Math.min(4.0, volumeFactor));
   baseline = Math.max(1, baseline);
 
-  // update session as completed
   const sess = workouts.find(w=>w.id===activeSessionId);
   if (sess){
     sess.completed = true;
@@ -756,36 +905,185 @@ function rateWorkout(level){
     sess.performedReps = performedReps;
   }
 
+  advanceWeekDay();
   saveAll();
 
-  // end active workout
   activeSessionId = null;
   steps = [];
   currentStepIndex = 0;
   performedReps = 0;
   plannedTotal = 0;
 
-  // go home + refresh
   showScreen("home");
   renderHome();
 }
 
+function getCss(v){
+  return getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+}
+
 /* -------------------------
-   History screen (som dine screenshots)
+   Week overview
+-------------------------- */
+function goToCurrentWeek(){
+  selectedWeek = currentWeek;
+  selectedDay = currentDay;
+  renderWeek();
+}
+
+function prevWeek(){
+  selectedWeek = Math.max(1, selectedWeek - 1);
+  selectedDay = 1;
+  renderWeek();
+}
+
+function nextWeek(){
+  selectedWeek = selectedWeek + 1;
+  selectedDay = 1;
+  renderWeek();
+}
+
+function ratingText(r){
+  if (r==="easy") return "Let";
+  if (r==="ok") return "OK";
+  if (r==="hard") return "Hård";
+  if (r==="fail") return "Fail";
+  if (r==="ended") return "Afsluttet";
+  return "—";
+}
+
+function weekDayState(w, d){
+  // pick the latest session for that week/day (if multiple)
+  const wd = `W${w}D${d}`;
+  const matches = workouts.filter(x => (x.weekDay===wd) || (x.week===w && x.day===d));
+  if (matches.length===0) return null;
+  matches.sort((a,b)=> (a.dateISO<b.dateISO?1:-1));
+  return matches[0];
+}
+
+function renderWeek(){
+  updateTopPill();
+  document.getElementById("weekTitle").innerText = `Week ${selectedWeek}`;
+
+  // build chips
+  const chips = [];
+  let doneCount = 0;
+  let sumReps = 0;
+  const ratings = [];
+
+  for (let d=1; d<=3; d++){
+    const sess = weekDayState(selectedWeek, d);
+    const isToday = (selectedWeek===currentWeek && d===currentDay);
+    const selected = (d===selectedDay);
+
+    let stateLabel = isToday ? "Today" : "—";
+    let stateClass = "";
+    let meta = "Ingen data endnu";
+
+    if (sess){
+      const completed = !!sess.completed && (sess.rating!=="ended");
+      if (completed){
+        stateLabel = "✓";
+        stateClass = "done";
+        doneCount++;
+        sumReps += (sess.performedReps || 0);
+        ratings.push(sess.rating);
+      } else {
+        stateLabel = "—";
+        meta = `Ufærdig • ${sess.performedReps||0}/${sess.plannedTotal||0} reps`;
+      }
+
+      meta = `Reps ${sess.performedReps||0}/${sess.plannedTotal||0} • ${ratingText(sess.rating)}`;
+    }
+
+    chips.push(`
+      <div class="dayChip" style="${selected?'border-color:rgba(255,255,255,.22)':''}" onclick="selectDay(${d})">
+        <div class="dayChipTop">
+          <div class="dayChipTitle">D${d}</div>
+          <div class="dayChipState ${stateClass}">${stateLabel}</div>
+        </div>
+        <div class="dayChipMeta">${meta}</div>
+      </div>
+    `);
+  }
+
+  document.getElementById("dayChips").innerHTML = chips.join("");
+
+  document.getElementById("weekDone").innerText = `${doneCount}/3`;
+  document.getElementById("weekReps").innerText = `${sumReps}`;
+  document.getElementById("weekRating").innerText =
+    ratings.length ? ratingText(mostCommon(ratings)) : "—";
+
+  renderWeekDetails();
+}
+
+function mostCommon(arr){
+  const m = new Map();
+  arr.forEach(x=>m.set(x,(m.get(x)||0)+1));
+  let best=null, bestN=-1;
+  for (const [k,v] of m.entries()){
+    if (v>bestN){ best=k; bestN=v; }
+  }
+  return best;
+}
+
+function selectDay(d){
+  selectedDay = d;
+  renderWeek();
+}
+
+function renderWeekDetails(){
+  const sess = weekDayState(selectedWeek, selectedDay);
+  const chip = document.getElementById("weekDetailChip");
+  const box = document.getElementById("weekDetails");
+
+  const wd = `W${selectedWeek}D${selectedDay}`;
+  chip.innerText = wd;
+
+  if (!sess){
+    box.innerHTML = `<div class="label">Ingen workout gemt for ${wd} endnu.</div>`;
+    return;
+  }
+
+  const d = new Date(sess.dateISO);
+  const dateText = d.toLocaleDateString("da-DK", { year:"numeric", month:"2-digit", day:"2-digit" });
+  const timeText = d.toLocaleTimeString("da-DK", { hour:"2-digit", minute:"2-digit" });
+
+  const setsText = (sess.sets && sess.sets.length) ? sess.sets.join("  ") : "—";
+
+  box.innerHTML = `
+    <div class="historyItem">
+      <div class="badge ${sess.rating==='fail' || sess.rating==='ended' ? 'fail' : (sess.rating==='hard' ? 'hard' : 'ok')}">
+        ${sess.rating==='fail' ? '×' : (sess.rating==='hard' ? '!' : (sess.rating==='ended' ? '⏹' : '✓'))}
+      </div>
+      <div class="historyMain">
+        <div class="historyTop">
+          <div>
+            <div class="historyTitle">${wd} • ${dateText} ${timeText}</div>
+            <div class="historyMeta">Phase ${sess.phase ?? "-"} • ${ratingText(sess.rating)} • Baseline ${sess.baselineBefore ?? "-"} → ${sess.baselineAfter ?? sess.baselineBefore ?? "-"}</div>
+          </div>
+          <div style="text-align:right">
+            <div class="historyTitle">${sess.performedReps||0}/${sess.plannedTotal||0}</div>
+            <div class="historyMeta">reps</div>
+          </div>
+        </div>
+        <div class="historySets">Sets: ${setsText}</div>
+      </div>
+    </div>
+  `;
+}
+
+/* -------------------------
+   History screen
 -------------------------- */
 function renderHistory(){
   updateTopPill();
 
-  const list = workouts
-    .slice()
-    .reverse();
-
+  const list = workouts.slice().reverse();
   document.getElementById("historyCount").innerText = String(list.length);
 
   if (list.length === 0){
-    document.getElementById("historyList").innerHTML = `
-      <div class="label">Ingen træninger endnu. Start en workout fra Home.</div>
-    `;
+    document.getElementById("historyList").innerHTML = `<div class="label">Ingen træninger endnu. Start en workout fra Home.</div>`;
     return;
   }
 
@@ -796,20 +1094,18 @@ function renderHistory(){
 
     let badgeClass = "ok";
     let badgeChar = "✓";
-    let ratingText = "OK";
+    let ratingTxt = "OK";
 
-    if (w.rating === "easy"){ badgeClass="ok"; badgeChar="✓"; ratingText="Let"; }
-    if (w.rating === "ok"){ badgeClass="ok"; badgeChar="✓"; ratingText="Passende"; }
-    if (w.rating === "hard"){ badgeClass="hard"; badgeChar="!"; ratingText="Hård"; }
-    if (w.rating === "fail"){ badgeClass="fail"; badgeChar="×"; ratingText="Fail/knæ"; }
-    if (w.rating === "ended"){ badgeClass="fail"; badgeChar="⏹"; ratingText="Afsluttet"; }
+    if (w.rating === "easy"){ badgeClass="ok"; badgeChar="✓"; ratingTxt="Let"; }
+    if (w.rating === "ok"){ badgeClass="ok"; badgeChar="✓"; ratingTxt="Passende"; }
+    if (w.rating === "hard"){ badgeClass="hard"; badgeChar="!"; ratingTxt="Hård"; }
+    if (w.rating === "fail"){ badgeClass="fail"; badgeChar="×"; ratingTxt="Fail/knæ"; }
+    if (w.rating === "ended"){ badgeClass="fail"; badgeChar="⏹"; ratingTxt="Afsluttet"; }
 
     const planned = w.plannedTotal ?? 0;
     const performed = w.performedReps ?? 0;
-
-    const setsText = (w.sets && w.sets.length)
-      ? w.sets.join("  ")
-      : "";
+    const setsText = (w.sets && w.sets.length) ? w.sets.join("  ") : "";
+    const wd = w.weekDay || (w.week && w.day ? `W${w.week}D${w.day}` : "—");
 
     return `
       <div class="historyItem">
@@ -817,20 +1113,15 @@ function renderHistory(){
         <div class="historyMain">
           <div class="historyTop">
             <div>
-              <div class="historyTitle">${dateText} ${timeText}</div>
-              <div class="historyMeta">
-                Phase ${w.phase ?? "-"} • ${ratingText} • Baseline ${w.baselineBefore ?? "-"} → ${w.baselineAfter ?? w.baselineBefore ?? "-"}
-              </div>
+              <div class="historyTitle">${wd} • ${dateText} ${timeText}</div>
+              <div class="historyMeta">Phase ${w.phase ?? "-"} • ${ratingTxt} • Baseline ${w.baselineBefore ?? "-"} → ${w.baselineAfter ?? w.baselineBefore ?? "-"}</div>
             </div>
             <div style="text-align:right">
               <div class="historyTitle">${performed}/${planned}</div>
               <div class="historyMeta">reps</div>
             </div>
           </div>
-
-          <div class="historySets">
-            Sets: ${setsText || "<span style='color:rgba(255,255,255,.45)'>-</span>"}
-          </div>
+          <div class="historySets">Sets: ${setsText || "<span style='color:rgba(255,255,255,.45)'>-</span>"}</div>
         </div>
       </div>
     `;
@@ -863,6 +1154,7 @@ function adjustBaseline(){
 /* -------------------------
    Init
 -------------------------- */
+initRing();
 renderHome();
 showScreen("home");
 </script>
